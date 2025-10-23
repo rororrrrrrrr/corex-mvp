@@ -1,0 +1,37 @@
+{
+  "title": "90 יום — תיק יעיל אחרי מס",
+  "summary_steps": [
+    "ייצוב נזילות",
+    "Rebalance דרך תרומות/דיבידנדים",
+    "הקצאת Pareto ליעד CVaR 12%",
+    "ביקורת חודשית + כיול Conformal"
+  ],
+  "numbers_signed": {
+    "DriftStartPct": 6.1,
+    "DriftTargetPct": 4.0,
+    "CVaR95": 11.3,
+    "FeesDragPct": 0.4,
+    "LiquidityMonths": 5.4
+  },
+  "p_bands": {
+    "after_tax_return_12m": {
+      "p10": 3.0,
+      "p50": 7.2,
+      "p90": 10.9
+    }
+  },
+  "sensitivities": [
+    "TER +0.2% ⇒ Return −0.18%",
+    "USDILS +5% ⇒ Risk +0.6%"
+  ],
+  "alternatives": [
+    "שמרני: תרומות בלבד",
+    "בסיס: תרומות+דיבידנדים; HIFO נקודתי",
+    "אקטיבי: Quality/Momentum ±5%"
+  ],
+  "do_now": [
+    "אישור מסלול בסיס",
+    "הפעלת Cash-Sweep",
+    "תזמון ביקורת"
+  ]
+}

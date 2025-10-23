@@ -1,0 +1,43 @@
+{
+  "as_of": "2025-11-01",
+  "positions": [
+    {
+      "symbol": "VT",
+      "qty": 120,
+      "price": 110,
+      "ccy": "USD"
+    }
+  ],
+  "target_allocation": {
+    "equities": 60,
+    "bonds": 30,
+    "alts": 5,
+    "cash": 5
+  },
+  "current_allocation": {
+    "equities": 66,
+    "bonds": 24,
+    "alts": 5,
+    "cash": 5
+  },
+  "risk": {
+    "stdev": 0.14,
+    "sharpe": 0.72,
+    "max_dd": 0.22,
+    "cvar": 0.18
+  },
+  "fx_exposure": {
+    "USD": 0.72,
+    "EUR": 0.18,
+    "ILS": 0.1
+  },
+  "tax_lots": [
+    {
+      "symbol": "VT",
+      "qty": 120,
+      "buy_px": 100,
+      "date": "2024-05-03"
+    }
+  ],
+  "drift_pct": 6.1
+}

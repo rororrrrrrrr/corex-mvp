@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>COREX — Zero-Cost MVP</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto;margin:0;background:#0b1220;color:#ecf2ff}
+    header{padding:16px 24px;background:#0f1726;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
+    .brand{font-weight:800;letter-spacing:.5px}
+    nav a{color:#a6ffea;margin-inline:8px;text-decoration:none}
+    .container{padding:16px}
+    .grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+    .card{background:#121a2b;border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    h3{margin-top:0}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .kpi{background:#0f1726;border-radius:12px;padding:12px}
+    .muted{color:#93a3d9}
+    .btn{background:#0be7b6;color:#001b14;font-weight:700;padding:10px 14px;border:none;border-radius:10px;cursor:pointer}
+    .chips span{display:inline-block;background:#1b2540;color:#a6ffea;border-radius:999px;padding:6px 10px;margin:2px;font-size:12px}
+    .hidden{display:none}
+    footer{padding:24px;color:#93a3d9;text-align:center}
+    .section{background:#0f1726;border-radius:12px;padding:12px;margin-top:12px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">COREX — MVP</div>
+    <nav>
+      <a href="#" onclick="showTab('dash')">דשבורד</a>
+      <a href="#" onclick="showTab('decision')">כרטיס החלטה</a>
+      <a href="#" onclick="showTab('profile')">פרופיל</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div id="dash">
+      <div class="grid">
+        <div class="card">
+          <h3>Quantum Wealth</h3>
+          <div class="kpis">
+            <div class="kpi"><b>שווי נקי</b><br/><span id="networth">—</span></div>
+            <div class="kpi"><b>תזרים חודשי</b><br/><span id="cashflow">—</span></div>
+            <div class="kpi"><b>Liquidity</b><br/><span id="liquidity">—</span></div>
+            <div class="kpi"><b>Coverage</b><br/><span id="coverage">—</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Investment Pulse</h3>
+          <div class="muted" id="investPulse">—</div>
+        </div>
+        <div class="card">
+          <h3>Income Factory</h3>
+          <div class="muted" id="incomeKpis">—</div>
+        </div>
+        <div class="card">
+          <h3>פעולות מהירות</h3>
+          <button class="btn" onclick="generateDecision()">צור כרטיס החלטה מדומה</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="decision" class="hidden">
+      <div class="card" id="decisionCard">
+        <h3>כרטיס החלטה</h3>
+        <div class="muted">חתום DFK-X² (סימולציה למטרות MVP)</div>
+        <div class="section">
+          <b>תמצית</b>
+          <ul id="summary"></ul>
+        </div>
+        <div class="section">
+          <b>מספרים חתומים</b>
+          <ul id="numbers"></ul>
+        </div>
+        <div class="section">
+          <b>רגישויות</b><div class="chips" id="sens"></div>
+        </div>
+        <div class="section">
+          <b>חלופות</b><ul id="alts"></ul>
+        </div>
+        <div class="section">
+          <b>פעולות עכשיו</b><ul id="doNow"></ul>
+        </div>
+        <div class="muted" style="margin-top:8px">הבהרה: מידע חינוכי וכללי בלבד.</div>
+      </div>
+    </div>
+
+    <div id="profile" class="hidden">
+      <div class="card">
+        <h3>פרופיל</h3>
+        <div class="section">
+          <label>הכנסה חודשית (₪): <input id="income" type="number" value="18000"/></label><br/>
+          <label>הוצאה חודשית (₪): <input id="expense" type="number" value="12500"/></label><br/>
+          <label>קרן חירום (חודשים): <input id="emergency" type="number" value="6"/></label><br/>
+          <button class="btn" onclick="saveProfile()">שמור</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>© COREX MVP • Positive Language • Educational only</footer>
+
+  <script>
+    async function loadData(){
+      const profile = await fetch('./data/user_profile.sample.json').then(r=>r.json());
+      const snapshot = await fetch('./data/portfolio_snapshot.sample.json').then(r=>r.json());
+      const incomePlan = await fetch('./data/income_plan.sample.json').then(r=>r.json());
+
+      document.getElementById('networth').textContent = '₪ 1,245,000';
+      document.getElementById('cashflow').textContent = '₪ +' + (profile.income_monthly - profile.expenses_monthly).toLocaleString('he-IL');
+      document.getElementById('liquidity').textContent = '5.4 חודשים';
+      document.getElementById('coverage').textContent = '0.91';
+      document.getElementById('investPulse').textContent = 'Drift ' + snapshot.drift_pct + '% → Guard 4.0% | CVaR@95 ~11.3%';
+      document.getElementById('incomeKpis').textContent = 'MRR יעד • ' + incomePlan.kpis.join(', ');
+    }
+
+    function showTab(id){
+      ['dash','decision','profile'].forEach(x=>document.getElementById(x).classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    async function generateDecision(){
+      const dc = await fetch('./data/decision_card.sample.json').then(r=>r.json());
+      const ul = (id, arr)=>{ const n = document.getElementById(id); n.innerHTML=''; arr.forEach(x=>{const li=document.createElement('li'); li.textContent=x; n.appendChild(li);}); };
+      ul('summary', dc.summary_steps);
+      document.getElementById('numbers').innerHTML = `
+        <li>Drift: ${dc.numbers_signed.DriftStartPct}% → ≤ ${dc.numbers_signed.DriftTargetPct}%</li>
+        <li>After-Tax Return (12ח׳): p10 ${dc.p_bands.after_tax_return_12m.p10}% · p50 ${dc.p_bands.after_tax_return_12m.p50}% · p90 ${dc.p_bands.after_tax_return_12m.p90}%</li>
+        <li>CVaR@95: ${dc.numbers_signed.CVaR95}% | FeesDrag: ${dc.numbers_signed.FeesDragPct}% | Liquidity: ${dc.numbers_signed.LiquidityMonths} חו׳</li>`;
+      const sens = document.getElementById('sens'); sens.innerHTML=''; dc.sensitivities.forEach(s=>{const span=document.createElement('span');span.textContent=s;sens.appendChild(span)});
+      ul('alts', dc.alternatives); ul('doNow', dc.do_now);
+      showTab('decision');
+    }
+
+    function saveProfile(){
+      const i = +document.getElementById('income').value;
+      const e = +document.getElementById('expense').value;
+      document.getElementById('cashflow').textContent = '₪ ' + (i - e).toLocaleString('he-IL');
+      alert('נשמר מקומית בדפדפן (MVP).');
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

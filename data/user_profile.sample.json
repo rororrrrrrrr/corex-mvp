@@ -1,0 +1,18 @@
+{
+  "user_id": "demo-uuid-1234",
+  "locale": "he-IL",
+  "currency": "ILS",
+  "risk_tolerance": "moderate",
+  "horizons": {
+    "home": 36,
+    "retirement": 240
+  },
+  "liquidity": "medium",
+  "ethical": [
+    "no_tobacco"
+  ],
+  "income_monthly": 18000,
+  "expenses_monthly": 12500,
+  "emergency_fund_months": 6,
+  "tax_region": "IL"
+}
